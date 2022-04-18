@@ -4,6 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
+import pages.HomePage;
+
+import java.util.List;
 
 /**
  * Created by Nahid Chowdhury
@@ -13,22 +19,20 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class BaseTests {
     private WebDriver driver;
+    protected HomePage homePage;
 
+    @BeforeClass
     public void setUp(){
         System.setProperty("webdriver.chrome.driver","src/test/resources/chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://the-internet.herokuapp.com/");
         driver.manage().window().maximize();
 
-        WebElement inputs = driver.findElement(By.linkText("Inputs"));
-        inputs.click();
-
-        System.out.println(driver.getTitle());
-        driver.quit();
+        homePage = new HomePage(driver);
     }
 
-    public static void main(String[] args) {
-        BaseTests baseTests = new BaseTests();
-        baseTests.setUp();
+    @AfterClass
+    public void tearDown(){
+        driver.quit();
     }
 }
